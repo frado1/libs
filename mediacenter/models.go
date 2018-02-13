@@ -43,7 +43,7 @@ func (s SetOption) Validate() error {
 	case "repeat":
 		return nil
 	default:
-		return fmt.Errorf("Playback option '%s' is not valid", s)
+		return fmt.Errorf("Playback option '%s' is not valid", s.Option)
 	}
 }
 
