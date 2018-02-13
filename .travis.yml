@@ -17,5 +17,5 @@ install:
   - dep prune
 
 script:
-  - goimports -d $(go list -f {{.Dir}} ./... | grep -v /vendor/)
-  - go tool vet $(go list -f {{.Dir}} ./... | grep -v /vendor/)
+  - goimports -d $(find . -type f -name '*.go' -not -path "./vendor/*")
+  - go tool vet $(find . -type f -name '*.go' -not -path "./vendor/*")
