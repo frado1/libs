@@ -25,7 +25,10 @@ func NewStateStore() *StateStore {
 // Store saves the given state and returns the old state
 func (s *StateStore) Store(name string, state string) (oldState string, changed bool) {
 	oldState, _ = s.states[name]
+
+	s.mutex.Lock()
 	s.states[name] = state
+	s.mutex.Unlock()
 
 	if oldState == "" {
 		changed = false
