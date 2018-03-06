@@ -5,6 +5,19 @@ import (
 	"strconv"
 )
 
+func ParseVolumeState(b []byte) (VolumeState, error) {
+	v := VolumeState{}
+
+	if err := json.Unmarshal(b, &v); err != nil {
+		return v, err
+	}
+	if err := v.Validate(); err != nil {
+		return v, err
+	}
+
+	return v, nil
+}
+
 func ParseSetPlaybackState(b []byte) (SetPlaybackState, error) {
 	s := SetPlaybackState(string(b))
 	if err := s.Validate(); err != nil {

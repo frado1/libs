@@ -8,6 +8,21 @@ import (
 	"time"
 )
 
+type VolumeState struct {
+	Mute   bool    `json:"mute"`
+	Volume float64 `json:"volume"`
+	Min    float64 `json:"min"`
+	Max    float64 `json:"max"`
+	Steps  float64 `json:"steps"`
+}
+
+func (v VolumeState) Validate() error {
+	if v.Volume < v.Min || v.Volume > v.Max {
+		return fmt.Errorf("Volume is %f, but has to be between %f and %f (min, max)", v.Volume, v.Min, v.Max)
+	}
+	return nil
+}
+
 type SetPlaybackState string
 
 func (s SetPlaybackState) Validate() error {
