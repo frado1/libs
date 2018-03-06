@@ -17,6 +17,12 @@ Since media centers can consist of different software I introduced the package `
 Brokers which talk to media center software should use those predefined messages.
 This way a custom logic can implement a router which can publish messages for different media center software transparently.
 
+## Service check
+
+The package `servicecheck` provides functions to check the availability of a service.
+In this context a service means a port on a host.
+Technically the functions try to open a connection to the given address to verify it's availability.
+
 ## State store
 
 The struct `StateStore` from the package `statestore` can be used to store various states in a key-value-store.
