@@ -9,18 +9,26 @@ import (
 )
 
 type VolumeState struct {
-	Mute   bool    `json:"mute"`
-	Volume float64 `json:"volume"`
-	Min    float64 `json:"min"`
-	Max    float64 `json:"max"`
-	Steps  float64 `json:"steps"`
+	Active             bool                     `json:"active"`
+	Mute               bool                     `json:"mute"`
+	Volume             float64                  `json:"volume"`
+	Minimum            float64                  `json:"min"`
+	Maximum            float64                  `json:"max"`
+	Steps              float64                  `json:"steps"`
+	ChangeCapabilities VolumeChangeCapabilities `json:"changecapabilities"`
 }
 
 func (v VolumeState) Validate() error {
-	if v.Volume < v.Min || v.Volume > v.Max {
-		return fmt.Errorf("Volume is %f, but has to be between %f and %f (min, max)", v.Volume, v.Min, v.Max)
+	if v.Volume < v.Minimum || v.Volume > v.Maximum {
+		return fmt.Errorf("Volume is %f, but has to be between %f and %f (min, max)", v.Volume, v.Minimum, v.Maximum)
 	}
 	return nil
+}
+
+type VolumeChangeCapabilities struct {
+	Mute   bool `json:"mute"`
+	UpDown bool `json:"updown"`
+	Set    bool `json:"set"`
 }
 
 type SetPlaybackState string
