@@ -99,6 +99,11 @@ func (p Play) Validate() error {
 			return w.Validate()
 		}
 		return fmt.Errorf("Wrong item specified for playing %s, should be PlayItemPlaylist but is %v", p.Kind, p.What)
+	case "station":
+		if w, ok := p.What.(PlayItemStation); ok {
+			return w.Validate()
+		}
+		return fmt.Errorf("Wrong item specified for playing %s, should be PlayItemStation but is %v", p.Kind, p.What)
 	case "artist":
 		if w, ok := p.What.(PlayItemArtist); ok {
 			return w.Validate()
@@ -158,6 +163,15 @@ type PlayItemPlaylist string
 func (p PlayItemPlaylist) Validate() error {
 	if p == "" {
 		return errors.New("Playing a playlist requires the name")
+	}
+	return nil
+}
+
+type PlayItemStation string
+
+func (p PlayItemStation) Validate() error {
+	if p == "" {
+		return errors.New("Playing a station requires the name")
 	}
 	return nil
 }
@@ -304,6 +318,7 @@ type PlaybackItem struct {
 	Movie    *PlaybackItemMovie   `json:"movie,omitempty"`
 	Episode  *PlaybackItemEpisode `json:"episode,omitempty"`
 	Song     *PlaybackItemSong    `json:"song,omitempty"`
+	Station  *PlaybackItemStation `json:"station,omitempty"`
 }
 
 type PlaybackItemLiveTv struct {
@@ -333,6 +348,10 @@ type PlaybackItemSong struct {
 	Track  int    `json:"track"`
 	Total  int    `json:"total"`
 	Year   int    `json:"year"`
+}
+
+type PlaybackItemStation struct {
+	Name string `json:"name"`
 }
 
 type TvChannel struct {

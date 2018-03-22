@@ -81,6 +81,8 @@ func ParsePlay(k Kind, b []byte) (Play, error) {
 		p.What = w
 	case "playlist":
 		p.What = PlayItemPlaylist(string(b))
+	case "station":
+		p.What = PlayItemStation(string(b))
 	case "artist":
 		w := PlayItemArtist{}
 		err = json.Unmarshal(b, &w)
