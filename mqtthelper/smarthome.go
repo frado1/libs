@@ -27,7 +27,6 @@ func NewSmartHomeBroker(uri string, topLevelTopic string, h SmartHomeOnConnectHa
 
 	ops.SetOnConnectHandler(func(c mqtt.Client) {
 		log.Printf("Connected to MQTT at %s", uri)
-		broker.setConnectionState("2")
 		h(broker)
 	})
 
@@ -36,6 +35,10 @@ func NewSmartHomeBroker(uri string, topLevelTopic string, h SmartHomeOnConnectHa
 	broker.c = mqtt.NewClient(ops)
 
 	return broker
+}
+
+func (b SmartHomeBroker) SetConnectionState(state string) {
+	PublishMessage(b.c, b.connectedTopic(), 0, true, state)
 }
 
 func (b SmartHomeBroker) Connect() error {
@@ -47,7 +50,7 @@ func (b SmartHomeBroker) Connect() error {
 }
 
 func (b SmartHomeBroker) Disconnect() {
-	b.setConnectionState("0")
+	b.SetConnectionState("0")
 	b.c.Disconnect(100)
 }
 
@@ -75,10 +78,6 @@ func (b SmartHomeBroker) publish(topic string, qos byte, retained bool, payload 
 	}
 	log.Printf("Published message '%s' to topic %s (retained: %s)", payload, topic, strconv.FormatBool(retained))
 	return true
-}
-
-func (b SmartHomeBroker) setConnectionState(state string) {
-	PublishMessage(b.c, b.connectedTopic(), 0, true, state)
 }
 
 func (b SmartHomeBroker) connectedTopic() string {
