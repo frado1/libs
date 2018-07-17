@@ -163,14 +163,14 @@ func getClientOptions(uri string, h OnConnectHandler, parallel bool) *mqtt.Clien
 		ops.SetOrderMatters(false)
 	}
 
-	ops.OnConnectionLost = func(c mqtt.Client, err error) {
+	ops.SetConnectionLostHandler(func(c mqtt.Client, err error) {
 		log.Printf("Connection to MQTT lost: %s", err)
-	}
+	})
 
-	ops.OnConnect = func(c mqtt.Client) {
+	ops.SetOnConnectHandler(func(c mqtt.Client) {
 		log.Printf("Connected to MQTT at %s", uri)
 		h(c)
-	}
+	})
 
 	return ops
 }
