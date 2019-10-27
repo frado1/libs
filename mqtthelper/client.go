@@ -49,7 +49,7 @@ func LoadConfig(path string, c interface{}) error {
 	return nil
 }
 
-func NewClientWithLogin(uri string, user string, password string, h OnConnectHandler) (mqtt.Client, error) {
+func NewClientLogin(uri string, user string, password string, h OnConnectHandler) (mqtt.Client, error) {
         co := getClientOptions(uri, h, true)
         co.SetUsername(user) 
         co.SetPassword(password)
