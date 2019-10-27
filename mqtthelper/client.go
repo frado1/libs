@@ -49,6 +49,15 @@ func LoadConfig(path string, c interface{}) error {
 	return nil
 }
 
+func NewClientWithLogin(uri string, user string, password string, h OnConnectHandler) (mqtt.Client, error) {
+	c := mqtt.NewClient(getClientOptions(uri, h, false))
+	if c.SetUsername(user); c.SetPassword(password); token := c.Connect(); token.Wait() && token.Error() != nil {
+		return nil, token.Error()
+	}
+
+	return c, nil
+}
+
 func NewClient(uri string, h OnConnectHandler) (mqtt.Client, error) {
 	c := mqtt.NewClient(getClientOptions(uri, h, false))
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
@@ -61,6 +70,15 @@ func NewClient(uri string, h OnConnectHandler) (mqtt.Client, error) {
 func NewClientParallel(uri string, h OnConnectHandler) (mqtt.Client, error) {
 	c := mqtt.NewClient(getClientOptions(uri, h, true))
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
+		return nil, token.Error()
+	}
+
+	return c, nil
+}
+
+func NewClientParallelLogin(uri string, user string, password string, h OnConnectHandler) (mqtt.Client, error) {
+	c := mqtt.NewClient(getClientOptions(uri, h, true))
+	if c.SetUsername(user); c.SetPassword(password); token := c.Connect(); token.Wait() && token.Error() != nil {
 		return nil, token.Error()
 	}
 
