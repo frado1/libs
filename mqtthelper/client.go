@@ -51,7 +51,9 @@ func LoadConfig(path string, c interface{}) error {
 
 func NewClientWithLogin(uri string, user string, password string, h OnConnectHandler) (mqtt.Client, error) {
 	c := mqtt.NewClient(getClientOptions(uri, h, false))
-	if c.SetUsername(user); c.SetPassword(password); token := c.Connect(); token.Wait() && token.Error() != nil {
+	c.SetUsername(user)
+	c.SetPassword(password)
+	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		return nil, token.Error()
 	}
 
@@ -78,7 +80,9 @@ func NewClientParallel(uri string, h OnConnectHandler) (mqtt.Client, error) {
 
 func NewClientParallelLogin(uri string, user string, password string, h OnConnectHandler) (mqtt.Client, error) {
 	c := mqtt.NewClient(getClientOptions(uri, h, true))
-	if c.SetUsername(user); c.SetPassword(password); token := c.Connect(); token.Wait() && token.Error() != nil {
+	c.SetUsername(user) 
+	c.SetPassword(password)
+	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		return nil, token.Error()
 	}
 
